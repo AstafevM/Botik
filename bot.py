@@ -17,13 +17,15 @@ async def main():
 
     dispatcher = Dispatcher()
 
-    with open("universities.csv", 'r+', encoding="utf-8") as f:
-        csv_writer = csv.writer(f, delimiter = "|", lineterminator="\n")
-        first_row = ["ФИО", "город", "универ", "факультет", "специальность", "финансирование", "форма обучения"]
-        if f.readline() != "|".join(first_row) + "\n":
-            csv_writer.writerow(first_row)
+    f = open("universities.csv", 'r+', encoding="utf-8")
+    csv_writer = csv.writer(f, delimiter = "|")
+    first_row = ["ФИО", "город", "универ", "факультет", "специальность", "финансирование", "форма обучения"]
+    if f.readline() != "|".join(first_row) + "\r\n":
+        csv_writer.writerow(first_row)
 
     await dispatcher.start_polling(bot)
+    
+    f.close()
 
 
 if __name__ == "__main__":
