@@ -1,12 +1,8 @@
 from aiogram.client.default import DefaultBotProperties
-from aiogram import Bot, Dispatcher
-
+from aiogram import Dispatcher, Bot
 from handlers import callback_handler, text_message_nandler
 
-from bot_instance import my_bot
-
 import logging
-
 import asyncio
 
 
@@ -14,8 +10,7 @@ async def main():
 
     logging.basicConfig(level=logging.DEBUG)
 
-    with open(".env", "r") as f: 
-        BOT_API = f.readline().split("=")[1]
+    with open(".env", "r") as f: BOT_API = f.readline().split("=")[1]
 
     bot = Bot(BOT_API, default=DefaultBotProperties(parse_mode="HTML"))
 
@@ -27,7 +22,7 @@ async def main():
     )
 
     await bot.delete_webhook(drop_pending_updates=True)
-    await root_dp.start_polling(my_bot)
+    await root_dp.start_polling(bot)
 
 
 if __name__ == "__main__":

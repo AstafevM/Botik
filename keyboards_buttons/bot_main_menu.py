@@ -1,6 +1,5 @@
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from aiogram.types import InlineKeyboardButton, Message
-
+from aiogram.types import InlineKeyboardButton
 from connection_with_db import connect
 
 
@@ -15,12 +14,12 @@ def get_back_button():
     return builder.as_markup()
 
 
-def get_menu_keyboard(message):
+def get_menu_keyboard(user_id):
     builder = InlineKeyboardBuilder()
     titles = [
         "ФИО", "город", "универ", "факультет", "специальность", "финансирование", "формаобучения"
     ]
-
+    
     for i in range(len(titles)):
 
         if i == len(titles) - 1:
@@ -28,7 +27,7 @@ def get_menu_keyboard(message):
         else:
             button_text = titles[i]
 
-        if connect.is_value_in_db(message.from_user.id, titles[i]):
+        if connect.is_value_in_db(user_id, titles[i]):
             button_text = '✅' + button_text
 
         builder.add(
@@ -38,20 +37,28 @@ def get_menu_keyboard(message):
             )
         )
 
+    builder.add(
+            InlineKeyboardButton(
+                text="Проверить данные", 
+                callback_data="print"
+            )
+        )
+
     builder.adjust(3)
     return builder.as_markup()
 
 
-async def main_menu(message: Message, need_edit: bool):
-    content = "Выбери категорию для заполнения.\n"\
-              "Чтобы посмотреть внесённые данные введите команду /print"
+async def main_menu(message, user_id,  need_edit: bool):
+    content = "Выбери категорию для заполнения."
+    keyboard = get_menu_keyboard(user_id)
+
     if need_edit:
         await message.edit_text(
-            content,
-            reply_markup=get_menu_keyboard(message)
+            text=content,
+            reply_markup=keyboard
         )
     else:
         await message.answer(
-            content,
-            reply_markup=get_menu_keyboard(message)
+            text=content,
+            reply_markup=keyboard
         )
