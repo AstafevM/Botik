@@ -1,6 +1,5 @@
 from aiogram.utils.formatting import Text
 from aiogram.filters import Command
-from aiogram.types import Message
 from aiogram import Router, F
 
 from connection_with_db import connect
@@ -28,7 +27,7 @@ async def cmd_start(message):
 
 
 @router.message(F.text, Command("print"))
-async def cmd_print(message: Message):
+async def cmd_print(message):
     await message.answer(
         text=connect.get_user_data(message.from_user.id),
         reply_markup=get_back_button()
