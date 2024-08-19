@@ -35,14 +35,10 @@ class ConnectionWithDB:
     async def add_user_to_db(self, user_id):
         if not self.is_user_in_db(user_id):
             self.cursor.execute("INSERT INTO users (user_id) VALUES (?)", (user_id,))
-        else:
-            print("User already in the DB")
 
     async def add_value_to_db(self, user_id, category, value):
         if self.is_user_in_db(user_id):
             self.cursor.execute(f"UPDATE users SET {category} = ? WHERE user_id = ?", (value, user_id))
-        else:
-            print("User is not in the DB")
 
 
 connect = ConnectionWithDB()
