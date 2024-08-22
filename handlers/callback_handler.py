@@ -1,6 +1,6 @@
 from aiogram import Router, F
 from keyboards_buttons.bot_main_menu import main_menu, get_back_button
-from selected_category import selected_category_instance
+# from selected_category import selected_category_instance
 from connection_with_db import connect
 
 
@@ -9,9 +9,10 @@ router = Router()
 
 async def answer(callback, text: str):
 
-    selected_category_instance.set(callback.data.split("_")[1])
-
-    match selected_category_instance.get():
+    # selected_category_instance.set(callback.from_user.id, text)
+    connect.add_value_to_db(callback.from_user.id, 'selected_category', text)
+    
+    match connect.get_selected_category(callback.from_user.id):
         case "формаобучения": 
             text = "форму обучения (очно/заочно)"
         case "финансирование":
@@ -29,14 +30,13 @@ async def get_callback(callback):
     category = callback.data.split("_")[1]
 
     await answer(callback, category)
-    print(f"selected_category = {selected_category_instance.get()}")
 
     await callback.answer()
 
 
 @router.callback_query(F.data == "back_to_menu")
 async def back_to_menu(callback):
-    selected_category_instance.set(None)
+    connect.add_value_to_db(callback.from_user.id, 'selected_category', None)
     await main_menu(callback.message, callback.from_user.id, True)
     await callback.answer()
 

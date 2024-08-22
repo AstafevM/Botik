@@ -2,13 +2,13 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram import Dispatcher, Bot
 from handlers import callback_handler, text_message_nandler
 
-import logging
+# import logging
 import asyncio
 
 
 async def main():
 
-    logging.basicConfig(level=logging.DEBUG)
+    # logging.basicConfig(level=logging.DEBUG)
 
     with open(".env", "r") as f: BOT_API = f.readline().split("=")[1]
 
