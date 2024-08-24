@@ -1,6 +1,5 @@
 from aiogram import Router, F
 from keyboards_buttons.bot_main_menu import main_menu, get_back_button
-# from selected_category import selected_category_instance
 from connection_with_db import connect
 
 
@@ -9,7 +8,6 @@ router = Router()
 
 async def answer(callback, text: str):
 
-    # selected_category_instance.set(callback.from_user.id, text)
     connect.add_value_to_db(callback.from_user.id, 'selected_category', text)
     
     match connect.get_selected_category(callback.from_user.id):

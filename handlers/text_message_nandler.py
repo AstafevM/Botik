@@ -3,7 +3,6 @@ from aiogram.filters import Command
 from aiogram import Router, F
 from connection_with_db import connect
 from keyboards_buttons.bot_main_menu import main_menu
-# from selected_category import selected_category_instance
 
 
 router = Router()
